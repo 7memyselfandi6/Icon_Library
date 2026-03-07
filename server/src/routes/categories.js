@@ -16,18 +16,28 @@ router.post("/", requireAuth, async (req, res) => {
     mainCategory = mainCategory.trim();
     subCategory = subCategory.trim();
 
+    console.log(`Attempting to create category: ${mainCategory} / ${subCategory}`);
+
     // Pre-insert duplicate check
     const existingCategory = await Category.findOne({ mainCategory, subCategory });
     if (existingCategory) {
-      return res.status(409).json({ error: "Duplicate category already exists with this name" });
+      console.warn(`Duplicate check failed: Category ${mainCategory}/${subCategory} already exists.`);
+      return res.status(409).json({ error: `Category "${subCategory}" already exists under "${mainCategory}"` });
     }
 
     const category = new Category({ mainCategory, subCategory });
     await category.save();
+    console.log(`Successfully created category: ${category._id}`);
     res.status(201).json(category);
   } catch (error) {
+    console.error("Error creating category:", error);
     if (error.code === 11000) {
-      return res.status(409).json({ error: "Duplicate category already exists in the database" });
+      // This happens if the index on the database doesn't match our pre-check logic
+      // e.g. if there's an old unique index on just 'subCategory' or just 'mainCategory'
+      return res.status(409).json({ 
+        error: "Database unique constraint violation. Please run 'npm run fix-indices' to sync database indexes.",
+        details: error.keyPattern 
+      });
     }
     if (error.name === "ValidationError") {
       return res.status(400).json({ error: error.message });

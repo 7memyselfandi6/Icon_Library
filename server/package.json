@@ -10,7 +10,8 @@
     "dev": "node --watch src/index.js",
     "start": "node src/index.js",
     "test": "node --test",
-    "cleanup": "node cleanup.js"
+    "cleanup": "node cleanup.js",
+    "fix-indices": "node fix-indices.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
