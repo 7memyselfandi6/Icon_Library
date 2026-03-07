@@ -17,7 +17,7 @@ const Header = ({
   return (
     <header className="header" role="banner">
       <div className="header-content" key="header-content">
-        <div className="logo">
+        <div className="logo" onClick={() => onNavigate("home")}>
           <i className="fas fa-icons"></i>
           <span>IconLibrary</span>
         </div>

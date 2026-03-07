@@ -519,6 +519,7 @@ body[data-page="admin-panel"] .header-content {
   gap: 0.5rem;
   font-size: 1.5rem;
   font-weight: 700;
+  cursor: pointer;
 }
 
 .logo i {

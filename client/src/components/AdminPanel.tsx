@@ -428,7 +428,7 @@ const AdminPanel = ({
     <>
       <header className="header">
         <div className="header-content">
-          <div className="logo">
+          <div className="logo" onClick={() => onNavigate("home")}>
             <i className="fas fa-icons"></i>
             <span>IconLibrary Admin</span>
           </div>
