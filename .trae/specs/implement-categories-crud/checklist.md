@@ -1,0 +1,10 @@
+- [ ] Category Mongoose model exists in `server/src/models/Category.js`
+- [ ] API endpoint `GET /api/categories` returns list of categories
+- [ ] API endpoint `POST /api/categories` creates a new category with Cloudinary image
+- [ ] API endpoint `PUT /api/categories/:id` updates category details and image
+- [ ] API endpoint `DELETE /api/categories/:id` removes category
+- [ ] AdminPanel displays the list of categories
+- [ ] "Add Category" button opens modal and successfully creates category
+- [ ] Edit icon opens modal and successfully updates category
+- [ ] Delete icon opens confirmation and successfully deletes category
+- [ ] Error messages are displayed for failed operations
