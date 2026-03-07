@@ -331,6 +331,7 @@ input:checked + .toggle-switch::before {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: linear-gradient(135deg, var(--bg) 0%, var(--bg-alt) 100%);
 }
 
 .login-container {
@@ -339,11 +340,12 @@ input:checked + .toggle-switch::before {
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 400px;
   padding: 2rem;
 }
 
 .login-card {
+  width: 100%;
+  max-width: 400px;
   background: var(--card-bg);
   border-radius: 24px;
   padding: 2.5rem;
@@ -778,9 +780,12 @@ body[data-page="admin-panel"] .header-content {
 }
 
 body[data-page="admin-panel"] .main {
-  max-width: 1600px;
-  margin: 2rem auto;
-  padding: 0 2rem;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 2rem;
+  background: var(--bg);
 }
 
 .search-section {
@@ -1132,10 +1137,10 @@ body[data-page="admin-panel"] .main {
 }
 
 .sidebar {
-  width: 300px;
+  width: 250px;
   background: var(--card-bg);
   border-right: 1px solid var(--border);
-  padding: 2rem 1.5rem;
+  padding: 2rem 1.25rem;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -1143,6 +1148,7 @@ body[data-page="admin-panel"] .main {
   top: 64px;
   height: calc(100vh - 64px);
   overflow-y: auto;
+  text-align: left;
 }
 
 .admin-content {
@@ -1214,11 +1220,13 @@ body[data-page="admin-panel"] .main {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  align-items: flex-start;
 }
 
 .nav-btn {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 0.75rem;
   padding: 0.85rem 1rem;
   border-radius: 10px;
@@ -1250,11 +1258,16 @@ body[data-page="admin-panel"] .main {
 
 /* Mobile Adjustments for Admin Panel */
 @media (max-width: 1024px) {
+  body[data-page="admin-panel"] .main {
+    flex-direction: column;
+    gap: 0;
+  }
+
   .sidebar {
     position: fixed;
     top: 64px;
-    left: -300px;
-    width: 280px;
+    left: -250px;
+    width: 250px;
     height: calc(100vh - 64px);
     z-index: 1060;
     transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1266,13 +1279,15 @@ body[data-page="admin-panel"] .main {
     left: 0;
   }
 
-  .admin-content {
+  .content {
+    margin: 1.5rem;
     padding: 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
-  .admin-content {
+  .content {
+    margin: 1rem;
     padding: 1rem;
   }
   
@@ -1306,10 +1321,12 @@ body[data-page="admin-panel"] .main {
 }
 
 .content {
+  flex: 1;
   background: var(--card-bg);
   border-radius: 16px;
-  padding: 2rem;
+  padding: 2.5rem;
   box-shadow: var(--shadow);
+  margin: 2rem 2rem 2rem 0; /* Add margin to keep it away from right edge */
 }
 
 .content-header {
