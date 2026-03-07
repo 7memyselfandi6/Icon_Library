@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Header from "./components/Header";
 import IconList from "./components/IconList";
 import AdminPanel from "./components/AdminPanel";
-import ThemeToggle from "./components/ThemeToggle";
 
 export type IconEntry = {
   id: string | number;
@@ -316,10 +315,11 @@ const App = () => {
     <div className="app">
       {route === "home" && (
         <div className="welcome-page">
-          <ThemeToggle
-            checked={theme === "dark"}
-            onChange={toggleTheme}
-            label={theme === "dark" ? "Dark Mode" : "Light Mode"}
+          <Header
+            onNavigate={navigate}
+            showThemeToggle
+            theme={theme}
+            onToggleTheme={toggleTheme}
           />
           <div className="welcome-container">
             <div className="welcome-card">
@@ -450,10 +450,11 @@ const App = () => {
 
       {route === "admin" && (
         <div className="admin-page">
-          <ThemeToggle
-            checked={theme === "dark"}
-            onChange={toggleTheme}
-            label={theme === "dark" ? "Dark Mode" : "Light Mode"}
+          <Header
+            onNavigate={navigate}
+            showThemeToggle
+            theme={theme}
+            onToggleTheme={toggleTheme}
           />
           <div className="login-container">
             <div className="login-card">

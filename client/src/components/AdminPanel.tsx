@@ -62,8 +62,34 @@ const AdminPanel = ({
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const totalIcons = icons.length;
+
+  // Close sidebar on navigation in mobile
+  const handleSectionChange = (section: typeof activeSection) => {
+    setActiveSection(section);
+    setIsSidebarOpen(false);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 1024) {
+        setIsSidebarOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Prevent body scroll when sidebar is open on mobile
+  useEffect(() => {
+    if (isSidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [isSidebarOpen]);
 
   const categoryGroups = useMemo(() => {
     const map = new Map<string, Set<string>>();
@@ -428,13 +454,32 @@ const AdminPanel = ({
     <>
       <header className="header">
         <div className="header-content">
-          <div className="logo" onClick={() => onNavigate("home")}>
-            <i className="fas fa-icons"></i>
+          <button
+            className={`hamburger mobile-only ${isSidebarOpen ? "active" : ""}`}
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            aria-expanded={isSidebarOpen}
+            aria-label="Toggle sidebar"
+            aria-controls="admin-sidebar"
+          >
+            <span className="hamburger-box">
+              <span className="hamburger-inner"></span>
+            </span>
+          </button>
+          <div className="logo" onClick={() => onNavigate("home")} aria-label="IconLibrary Home">
+            <i className="fas fa-icons" aria-hidden="true"></i>
             <span>IconLibrary Admin</span>
           </div>
 
           <div className="header-actions">
-            <div className="admin-badge">
+            <button
+              className="nav-link nav-button desktop-only"
+              type="button"
+              style={{ marginRight: "1rem" }}
+              onClick={() => onNavigate("library")}
+            >
+              <i className="fas fa-eye"></i> Library
+            </button>
+            <div className="admin-badge desktop-only">
               <i className="fas fa-shield-alt"></i>
               <span>{adminName}</span>
             </div>
@@ -444,16 +489,20 @@ const AdminPanel = ({
               onChange={onToggleTheme}
             />
 
-            <button className="logout-btn" type="button" onClick={onLogout}>
-              <i className="fas fa-sign-out-alt"></i>
-              Logout
+            <button className="logout-btn" type="button" onClick={onLogout} aria-label="Logout">
+              <i className="fas fa-sign-out-alt" aria-hidden="true"></i>
+              <span className="desktop-only">Logout</span>
             </button>
           </div>
         </div>
       </header>
 
       <main className="main">
-        <aside className="sidebar">
+        <aside
+          id="admin-sidebar"
+          className={`sidebar ${isSidebarOpen ? "active" : ""}`}
+          role="complementary"
+        >
           <div className="admin-info">
             <div className="admin-avatar">
               <i className="fas fa-user-shield"></i>
@@ -473,39 +522,45 @@ const AdminPanel = ({
             </div>
           </div>
 
-          <div
-            className={`menu-item ${activeSection === "upload" ? "active" : ""}`}
-            onClick={() => setActiveSection("upload")}
-          >
-            <i className="fas fa-cloud-upload-alt"></i>
-            <span>Upload Icon</span>
-          </div>
-          <div
-            className={`menu-item ${activeSection === "manage" ? "active" : ""}`}
-            onClick={() => setActiveSection("manage")}
-          >
-            <i className="fas fa-edit"></i>
-            <span>Manage Icons</span>
-          </div>
-          <div
-            className={`menu-item ${
-              activeSection === "categories" ? "active" : ""
-            }`}
-            onClick={() => setActiveSection("categories")}
-          >
-            <i className="fas fa-tags"></i>
-            <span>Categories</span>
-          </div>
-          <div
-            className={`menu-item ${
-              activeSection === "settings" ? "active" : ""
-            }`}
-            onClick={() => setActiveSection("settings")}
-          >
-            <i className="fas fa-cog"></i>
-            <span>Settings</span>
-          </div>
+          <nav className="admin-nav" role="navigation">
+            <button
+              className={`nav-btn ${activeSection === "upload" ? "active" : ""}`}
+              onClick={() => handleSectionChange("upload")}
+            >
+              <i className="fas fa-cloud-upload-alt"></i>
+              <span>Upload Icon</span>
+            </button>
+            <button
+              className={`nav-btn ${activeSection === "manage" ? "active" : ""}`}
+              onClick={() => handleSectionChange("manage")}
+            >
+              <i className="fas fa-edit"></i>
+              <span>Manage Icons</span>
+            </button>
+            <button
+              className={`nav-btn ${activeSection === "categories" ? "active" : ""}`}
+              onClick={() => handleSectionChange("categories")}
+            >
+              <i className="fas fa-tags"></i>
+              <span>Categories</span>
+            </button>
+            <button
+              className={`nav-btn ${activeSection === "settings" ? "active" : ""}`}
+              onClick={() => handleSectionChange("settings")}
+            >
+              <i className="fas fa-cog"></i>
+              <span>Settings</span>
+            </button>
+          </nav>
         </aside>
+
+        {isSidebarOpen && (
+          <div
+            className="sidebar-overlay mobile-only"
+            onClick={() => setIsSidebarOpen(false)}
+            aria-hidden="true"
+          />
+        )}
 
         <section className="content">
           {activeSection === "upload" && (
