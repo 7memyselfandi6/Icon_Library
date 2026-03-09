@@ -1,5 +1,8 @@
 import { v2 as cloudinary } from "cloudinary";
 import { Readable } from "stream";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const cloudinaryConfig = {
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
